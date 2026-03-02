@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPE Class 30 Sports</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: Arial, sans-serif;
+}
+
+body{
+  background:#f5f5f5;
+}
+
+/* ===== TOP HEADER ===== */
+header{
+  position:fixed;
+  top:0;
+  width:100%;
+  height:60px;
+  background:#c40000;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 15px;
+  z-index:1000;
+}
+
+.logo{
+  font-weight:bold;
+  font-size:18px;
+}
+
+.hamburger{
+  font-size:24px;
+  cursor:pointer;
+}
+
+.profile{
+  font-size:22px;
+  cursor:pointer;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar{
+  position:fixed;
+  left:-250px;
+  top:0;
+  width:250px;
+  height:100%;
+  background:#111;
+  color:white;
+  padding-top:70px;
+  transition:0.3s;
+}
+
+.sidebar a{
+  display:block;
+  padding:15px;
+  color:white;
+  text-decoration:none;
+}
+
+.sidebar a:hover{
+  background:#c40000;
+}
+
+.sidebar.active{
+  left:0;
+}
+
+/* ===== MAIN CONTENT ===== */
+main{
+  margin-top:70px;
+  padding:15px;
+}
+
+/* HERO */
+.hero{
+  height:200px;
+  background:url('https://picsum.photos/600/400') center/cover;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  font-size:22px;
+  font-weight:bold;
+  text-align:center;
+}
+
+/* SECTION TITLE */
+.section-title{
+  margin:20px 0 10px;
+  font-size:18px;
+  font-weight:bold;
+}
+
+/* CARD */
+.card{
+  background:white;
+  padding:15px;
+  margin-bottom:10px;
+  border-radius:8px;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* HORIZONTAL SCROLL */
+.scroll-x{
+  display:flex;
+  overflow-x:auto;
+  gap:10px;
+}
+
+.video-card{
+  min-width:200px;
+  height:120px;
+  background:#ddd;
+  border-radius:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* QUICK LINKS */
+.quick-links{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.quick-links div{
+  background:#c40000;
+  color:white;
+  padding:15px;
+  text-align:center;
+  border-radius:8px;
+  font-size:14px;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hamburger" onclick="toggleMenu()">☰</div>
+  <div class="logo">CPE Class 30</div>
+  <div class="profile">👤</div>
+</header>
+
+<div class="sidebar" id="sidebar">
+  <a href="#">Home</a>
+  <a href="#">About CPE Sports</a>
+  <a href="#">Teams</a>
+  <a href="#">Fixtures & Results</a>
+  <a href="#">News</a>
+  <a href="#">Media Gallery</a>
+  <a href="#">Live Score</a>
+  <a href="#">Calendar</a>
+  <a href="#">Shop</a>
+  <a href="#">Register</a>
+  <a href="#">Sponsors</a>
+  <a href="#">Contact</a>
+</div>
+
+<main>
+
+  <!-- HERO -->
+  <div class="hero">
+    CPE CLASS 30 SPORTS<br>
+    Built Different.
+  </div>
+
+  <!-- ADMIN POSTS -->
+  <div class="section-title">Latest News</div>
+
+  <div class="card">
+    <b>Match Preview</b>
+    <p>CPE vs Mechanical this Friday at LAUTECH Field.</p>
+  </div>
+
+  <div class="card">
+    <b>Training Update</b>
+    <p>Intensive training ahead of tournament finals.</p>
+  </div>
+
+  <!-- VIDEO HIGHLIGHTS -->
+  <div class="section-title">Video Highlights</div>
+
+  <div class="scroll-x">
+    <div class="video-card">Match 1</div>
+    <div class="video-card">Training</div>
+    <div class="video-card">Goals</div>
+  </div>
+
+  <!-- FIXTURES -->
+  <div class="section-title">Upcoming Fixtures</div>
+
+  <div class="card">
+    ⚽ CPE vs EE<br>
+    📍 LAUTECH Field<br>
+    🗓 March 10 | 4PM
+  </div>
+
+  <!-- RESULTS -->
+  <div class="section-title">Latest Result</div>
+
+  <div class="card">
+    CPE 2 – 1 Civil<br>
+    ⚽ Samuel (34')<br>
+    ⚽ David (78')
+  </div>
+
+  <!-- QUICK LINKS -->
+  <div class="section-title">Explore</div>
+
+  <div class="quick-links">
+    <div>Teams</div>
+    <div>Gallery</div>
+    <div>Calendar</div>
+    <div>Register</div>
+    <div>Shop</div>
+    <div>Sponsors</div>
+  </div>
+
+</main>
+
+<script>
+function toggleMenu(){
+  document.getElementById("sidebar").classList.toggle("active");
+}
+</script>
+
+</body>
+</html>
