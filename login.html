@@ -6,12 +6,7 @@
 <title>CPE Class 30 - Login</title>
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Arial, sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
 
 body{
   height:100vh;
@@ -30,11 +25,7 @@ body{
   box-shadow:0 5px 20px rgba(0,0,0,0.3);
 }
 
-h2{
-  text-align:center;
-  margin-bottom:20px;
-  color:#c40000;
-}
+h2{text-align:center;margin-bottom:20px;color:#c40000;}
 
 input{
   width:100%;
@@ -56,27 +47,11 @@ button{
   font-weight:bold;
 }
 
-button:hover{
-  background:#a30000;
-}
+button:hover{background:#a30000;}
 
-.toggle{
-  text-align:center;
-  margin-top:15px;
-  font-size:14px;
-}
-
-.toggle span{
-  color:#c40000;
-  cursor:pointer;
-  font-weight:bold;
-}
-
-.error{
-  color:red;
-  font-size:13px;
-  text-align:center;
-}
+.toggle{text-align:center;margin-top:15px;font-size:14px;}
+.toggle span{color:#c40000;cursor:pointer;font-weight:bold;}
+.error{color:red;font-size:13px;text-align:center;}
 </style>
 </head>
 <body>
@@ -87,20 +62,21 @@ button:hover{
   <input type="email" id="email" placeholder="Email">
   <input type="password" id="password" placeholder="Password">
 
-  <button onclick="handleAuth()">Login</button>
+  <button id="authBtn">Login</button>
 
   <div class="error" id="errorMsg"></div>
 
-  <div class="toggle">
-    Don't have an account? <span onclick="toggleForm()">Sign Up</span>
+  <div class="toggle" id="toggleText">
+    Don't have an account? <span id="toggleBtn">Sign Up</span>
   </div>
 </div>
 
-<!-- Firebase CDN -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+<script type="module">
 
-<script>
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
 const firebaseConfig = {
   apiKey: "AIzaSyDNaZ82JpMfErW4VOB-DiOQ9KwQZlKAly4",
   authDomain: "cpe-department-app.firebaseapp.com",
@@ -110,48 +86,49 @@ const firebaseConfig = {
   appId: "1:163479858146:web:89e2894febc15a5f45e7bb"
 };
 
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
 let isLogin = true;
 
-function toggleForm(){
-  isLogin = !isLogin;
-  document.getElementById("formTitle").innerText = isLogin ? "Login" : "Sign Up";
-  document.querySelector("button").innerText = isLogin ? "Login" : "Sign Up";
-  document.querySelector(".toggle").innerHTML = isLogin 
-    ? `Don't have an account? <span onclick="toggleForm()">Sign Up</span>`
-    : `Already have an account? <span onclick="toggleForm()">Login</span>`;
-}
+const authBtn = document.getElementById("authBtn");
+const toggleBtn = document.getElementById("toggleBtn");
+const toggleText = document.getElementById("toggleText");
+const formTitle = document.getElementById("formTitle");
+const errorMsg = document.getElementById("errorMsg");
 
-function handleAuth(){
+toggleBtn.addEventListener("click", () => {
+  isLogin = !isLogin;
+  formTitle.innerText = isLogin ? "Login" : "Sign Up";
+  authBtn.innerText = isLogin ? "Login" : "Sign Up";
+  toggleText.innerHTML = isLogin 
+    ? `Don't have an account? <span id="toggleBtn">Sign Up</span>`
+    : `Already have an account? <span id="toggleBtn">Login</span>`;
+  document.getElementById("toggleBtn").addEventListener("click", arguments.callee);
+});
+
+authBtn.addEventListener("click", async () => {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
-  const errorMsg = document.getElementById("errorMsg");
 
   if(!email || !password){
     errorMsg.innerText = "Please fill all fields";
     return;
   }
 
-  if(isLogin){
-    auth.signInWithEmailAndPassword(email,password)
-    .then(()=>{
-      window.location.href = "dashboard.html";
-    })
-    .catch(err=>{
-      errorMsg.innerText = err.message;
-    });
-  }else{
-    auth.createUserWithEmailAndPassword(email,password)
-    .then(()=>{
-      window.location.href = "dashboard.html";
-    })
-    .catch(err=>{
-      errorMsg.innerText = err.message;
-    });
+  try{
+    if(isLogin){
+      await signInWithEmailAndPassword(auth,email,password);
+    }else{
+      await createUserWithEmailAndPassword(auth,email,password);
+    }
+
+    window.location.href = "dashboard.html";
+  }catch(error){
+    errorMsg.innerText = error.message;
   }
-}
+});
+
 </script>
 
 </body>
