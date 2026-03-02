@@ -1,1 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPE Class 30 - Login</title>
 
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+
+body{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#c40000,#8b0000);
+}
+
+.container{
+  background:white;
+  width:90%;
+  max-width:400px;
+  padding:30px;
+  border-radius:10px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.3);
+}
+
+h2{text-align:center;margin-bottom:20px;color:#c40000;}
+
+input{
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border:1px solid #ccc;
+  border-radius:6px;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  background:#c40000;
+  color:white;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+button:hover{background:#a30000;}
+
+.toggle{text-align:center;margin-top:15px;font-size:14px;}
+.toggle span{color:#c40000;cursor:pointer;font-weight:bold;}
+.error{color:red;font-size:13px;text-align:center;}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h2 id="formTitle">Login</h2>
+
+  <input type="email" id="email" placeholder="Email">
+  <input type="password" id="password" placeholder="Password">
+
+  <button id="authBtn">Login</button>
+
+  <div class="error" id="errorMsg"></div>
+
+  <div class="toggle" id="toggleText">
+    Don't have an account? <span id="toggleBtn">Sign Up</span>
+  </div>
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDNaZ82JpMfErW4VOB-DiOQ9KwQZlKAly4",
+  authDomain: "cpe-department-app.firebaseapp.com",
+  projectId: "cpe-department-app",
+  storageBucket: "cpe-department-app.firebasestorage.app",
+  messagingSenderId: "163479858146",
+  appId: "1:163479858146:web:89e2894febc15a5f45e7bb"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+let isLogin = true;
+
+const authBtn = document.getElementById("authBtn");
+const toggleBtn = document.getElementById("toggleBtn");
+const toggleText = document.getElementById("toggleText");
+const formTitle = document.getElementById("formTitle");
+const errorMsg = document.getElementById("errorMsg");
+
+toggleBtn.addEventListener("click", () => {
+  isLogin = !isLogin;
+  formTitle.innerText = isLogin ? "Login" : "Sign Up";
+  authBtn.innerText = isLogin ? "Login" : "Sign Up";
+  toggleText.innerHTML = isLogin 
+    ? `Don't have an account? <span id="toggleBtn">Sign Up</span>`
+    : `Already have an account? <span id="toggleBtn">Login</span>`;
+  document.getElementById("toggleBtn").addEventListener("click", arguments.callee);
+});
+
+authBtn.addEventListener("click", async () => {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  if(!email || !password){
+    errorMsg.innerText = "Please fill all fields";
+    return;
+  }
+
+  try{
+    if(isLogin){
+      await signInWithEmailAndPassword(auth,email,password);
+    }else{
+      await createUserWithEmailAndPassword(auth,email,password);
+    }
+
+    window.location.href = "dashboard.html";
+  }catch(error){
+    errorMsg.innerText = error.message;
+  }
+});
+
+</script>
+
+</body>
+</html>
